@@ -15,6 +15,7 @@ subtitle: Hand-on multidimensional examples
   * Observe the seasonal pattern of primary production in the German Bight
   * Strengthen your GIS and mapping skills
 
+
 ##A. Introduction:
 
 #### Network Common Data Form (NetCDF):

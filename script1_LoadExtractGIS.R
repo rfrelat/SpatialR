@@ -154,13 +154,18 @@ ICESGColor_mean <- extract(GColor072015, ICESrect, fun=mean, na.rm=TRUE)
 dim(ICESGColor_mean)
 
 # Visualize the extracted information
+#Choose the palette colors
 pal <- brewer.pal(9, "Greens")
+#Create the color scale
 col_mean <- colscale(ICESGColor_mean, pal)
+#Map the rectangle according to the color scale
 plot(ICESrect, col=col_mean$col)
+#Add country border and axis
 map("worldHires", col="black", add=TRUE)
 box()
 axis(1)
 axis(2)
+#Add a color scale on the map
 add.colscale(col_mean$br, pal,posi="topleft", lab="Chl (mg/m3)")
 
 #Extract all the pixel values per polygon

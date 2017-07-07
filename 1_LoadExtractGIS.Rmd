@@ -1,5 +1,4 @@
 ---
-<<<<<<< HEAD
 title: "Spatial analysis with R"
 author: "Romain Frelat"
 date: "10 July 2017"
@@ -7,8 +6,6 @@ output:
   html_document: null
   fig_caption: yes
   keep_md: yes
-  pdf_document: default
-  word_document: default
 subtitle: How to load, extract and analyse spatial data in R ?
 ---
 
@@ -43,55 +40,17 @@ source("MapTools.R")
 ```
 If you have an error message, check if the packages are installed. If not, install them by typing `install.packages(c("maps", "mapdata", "ncdf4", "raster", "rgdal", "RColorBrewer", "sp"))`.  
 Check also that the file `MapTools.R` is in your working directory.
-=======
-title: "GIS and R - how to load, extract and analyse spatial data in R ?"
-subtitle: "Spatial data in R"
-author: "Romain Frelat"
-date: "10 July 2017"
-output:  
-  html_document:
-  keep_md: true 
----
-
-##A. Getting ready:
-
-###Get ready:
-
-1. Get the zip file *Multivariate2D3D.zip* (can be downloaded: https://github.com/rfrelat/Multivariate2D3D/)
-2. Unzip the archive in a new folder. The zip file contain the data (*IBTS_Tensor.Rdata*), the R-script (*script_Multivariate2D3D.R*) and the present document as a pdf
-3. Open the R script *script_Multivariate2D3D.R* with your favourite R editor (RStudio is recommended)
-4. Be sure to set the working directory (Session > Set Working Directory) to the directory where the script and the data are.
-
-###Load the package and needed functions
-For this work, we will need to use two package *ade4* and *PTAk*.
-```{r, message=FALSE, fig.path='figures/'}
-library(ade4)
-library(PTAk)
-```
-
-If you have an error message, check if the packages are installed. If not, use the function `install.packages(c("ade4", "PTAk")`.
->>>>>>> parent of 217475a... First draft
 
 
-### Load the dataset
-The data is a *Rdata* file, that can be loaded with the function `load()`.
-```{r, comment ="", fig.path='figures/'}
-load("IBTS_Tensor.Rdata")
-dim(IBTS_tensor)
-```
-You loaded a variable called `IBTS_tensor` which is an array with three dimension: 65 fish species in the first dimension, 31 years in the second dimension, and 7 roundfish areas (RA) in the third dimension.
-To see the names of the dimension, you can type:
-```{r, results='hide', fig.path='figures/'}
-dimnames(IBTS_tensor)
-```
+## B. Load spatial data
 
-<<<<<<< HEAD
 ![](Figures/GISR.png) 
 
 ### B.1 Load a raster
 
 #### Bathymetry of the Baltic Sea
 The General Bathymetric Chart of the Oceans ([GEBCO](http://www.gebco.net/)) provides global bathymetry dataset with a high resolution of 30 arc-second. In  this example, the file *GEBCO2014_Subset_30Sec.tif* is a subset of the global dataset. The file is a Geotiff (an image with regular grid structure and information on projection system) and can be loaded with the function `raster`.
+
 ```{r, comment =""}
 #Set the directory of the GEBCO file
 dir<-"Data/GEBCO2014_Subset_30Sec.tif" 
@@ -100,33 +59,18 @@ bathy <- raster(dir)
 ```
 
 #### Information about the loaded raster
+
 ```{r, comment =""}
 #Projection system
 proj4string(bathy)
 ```
 Here the projection system is `longlat`, i.e. the coordinates are not projected, and expressed in degrees in latitude and longitude. The datum is `WGS84` (World Geodesic System 1984) which is the most common datum nowadays. This projection system (`+proj=longlat +datum=WGS84`) is very common for output of models and dataset with global coverage. In the following examples, all the data have the same projection, but one has to keep in mind that the **coordinate reference systems is an important part of spatial data, and may be a source of error**.
-=======
-***
 
-![](figures/IBTSTensor.png)
-
-
-Abundance data comes from the ICES DAtabase for TRAwl Surveys (DATRAS; http://datras.ices.dk/ Home/Default.aspx). The North Sea International Bottom Trawl Survey (NS-IBTS) is an international effort to sampled the demersal fish communities in the North Sea annually and consistently with a standard otter trawl net (*chalut Grande Ouverture Verticale*, GOV) hauled over the seabed for 30 min. The data is openly available online and the Catch per Unit Effort (CPUE) per length class and per area was downloaded for the first quarter of the period 1985 to 2015 for the roundfish area (RA) 1 to 7. Pre-processing was performed to clean the data, remove the pelagic and the rare species and to transform the CPUE in a three dimensional array, per species, year and roundfish areas (RA). 
-
-***
-
-### Understanding the variables
-While loading the data, we saw two different type of variables, quite unusual in R: array and list.
->>>>>>> parent of 217475a... First draft
-
-####Array
-The object `IBTS_Tensor` is an array. Array is generalization of matrix, with more than 2 dimensions. It can only contain numbers. The dimension of the array is given by the function is `dim()`, and the different elements are accessed with `[ ]`, similar to a matrix or a data.frame: 
-```{r, comment ="", fig.path='figures/'}
-dim(IBTS_tensor)
-IBTS_tensor[18,14,6]#Select one element, e.g. Abundance of Cod, in 1998, in RA6
-IBTS_tensor[18,,6]#Select one vector, e.g. abundance of Cod in 1998
+```{r, comment =""}
+#Extent of the dataset
+bbox(bathy)
 ```
-<<<<<<< HEAD
+
 The bathymetry data covers the rectangle defined in longitude between 5$^\circ$W and 30$^\circ$E; and in latitude between 50$^\circ$N and 70$^\circ$N.  
 
 ```{r, comment =""}
@@ -149,7 +93,6 @@ map("worldHires", col="grey90", border="grey50",
     fill=TRUE, add=TRUE)
 ```
 
-***
 
 #### Your turn: 
 1. Play with the arguments `xlim` and `ylim` of the function `plot()` to get a map of the Baltic Sea only (defined between 10 and 30$^\circ$E, and between 53 and 66 $^\circ$N)
@@ -162,32 +105,14 @@ plot(bathy, xlim=c(10, 30), ylim=c(53, 66),
      main="Bathymetry of the Baltic Sea")
 map("worldHires", col="grey90", border="grey50", 
     fill=TRUE, add=TRUE)
-=======
-```{r, comment ="", eval=FALSE}
-IBTS_tensor[18,,]#Select one matrix, e.g. abundance of Cod
-```
-```{r, comment ="", echo=FALSE}
-head(IBTS_tensor[18,,])
 ```
 
-####List
-The names of the dimensions of `IBTS_Tensor` are stored in a list. List can contain all kind of elements, without restriction on length or type (can be elements of different lengths made of characters or numbers). The number of elements is given by function is `length()`, and the different elements are accessed by `[[ ]]`.
 
-```{r, comment ="", fig.path='figures/'}
-names_tensor <- dimnames(IBTS_tensor) # the list of names is stored in a new variable
-length(names_tensor) #there are three elements in the list, one element for each dimension
-names_tensor[[2]] #show the second element of the list
-names_tensor[[1]][18]#show the 18th element of the first element of the list
->>>>>>> parent of 217475a... First draft
-```
+#### Solution
+```{r, eval = FALSE, collapse=TRUE, comment ="", fig.path='figures/'}
+#1.
+plot(bathy, xlim=c(10, 30), ylim=c(53, 66))
 
-### Your turn: 
-1. What is the index of Hake (Merluccius merluccius) in the dataset ?
-2. What is the abundance of Hake (Merluccius merluccius) in 1988 in RA 1 ?
-3. What is the abundance of Hake between 2010 and 2015 in RA 1?
-4. Can you show the evolution of Hake abundance between 1985 and 2015 in RA 1?
-
-<<<<<<< HEAD
 #2.
 plot(bathy, xlim=c(10, 30), ylim=c(53, 66),
      col = brewer.pal(9,"Blues"))
@@ -197,37 +122,13 @@ plot(bathy, xlim=c(10, 30), ylim=c(53, 66),
      main="Bathymetry of the Baltic Sea")
 map("worldHires", col="grey90", border="grey50", 
     fill=TRUE, add=TRUE)
-=======
-You should get something like:
-```{r, echo = FALSE, collapse=TRUE, comment ="", fig.path='figures/'}
-which(names_tensor[[1]]=="Merluccius merluccius")
-IBTS_tensor[33,4,1]
-IBTS_tensor[33,26:31,1]
-plot(names_tensor[[2]], IBTS_tensor[33,,1], type="l", 
-     xlab="Time", ylab="CPUE (n/h)", main="Abundance of Hake in RA1")
 ```
 
-#### Solution
-```{r, eval = FALSE, collapse=TRUE, comment ="", fig.path='figures/'}
-#1
-which(names_tensor[[1]]=="Merluccius merluccius")
-#2
-IBTS_tensor[33,4,1]
-#3
-IBTS_tensor[33,26:31,1]
-#4
-plot(names_tensor[[2]], IBTS_tensor[33,,1], type="l", 
-     xlab="Time", ylab="CPUE (n/h)", main="Abundance of Hake in RA1")
->>>>>>> parent of 217475a... First draft
-```
 
-***
-
-<<<<<<< HEAD
 ### B.2 Load a vector 
 
 #### Bottom trawl survey in the baltic Sea
-The Baltic International Trawl Survey (BITS) is an international effort to sample the fish population in the Baltic Sea (ICES, 2014). Dataset and documentation is available on the [ICES webpage](:http://datras.ices.dk/Data_products/Download/Download_Data_public.aspx). The data available in the shapefile `Hauls_BITSTVLQ1_2016.shp` contain the position and the catches of the hauls made with a TVL gear during the first quarter of 2016. 
+The Baltic International Trawl Survey (BITS) is an international effort to sample the fish population in the Baltic Sea (ICES, 2014). Dataset and documentation is available on the [ICES webpage](:http://datras.ices.dk/Data_products/Download/Download_Data_public.aspx). The shapefile `Hauls_BITSTVLQ1_2016.shp` contains the position and the catches of the hauls made with a TVL gear during the first quarter of 2016. 
 
 A shapefile is always made of multiple files (the key ones are `.shp`: the definition of the spatial object, `.prj`: the definition of the projection system, and `.dbf`: the attribute table, i.e. the data associated to each object). The function `readOGR()` will read all these files together.
 
@@ -254,62 +155,8 @@ The projection system is the same than the raster loaded previously (geographic 
 ```{r, results='hide', fig.path='Figures/'}
 #Variables in the attribute table
 names(hauls@data)
-=======
-##B. Two dimensions: Principal Component Analysis
-
-![ ](figures/2DPCA_illu.png)
-
-### Preparing the dataset
-
-#### From 3D to 2D
-The tensor is flattened into a 2D matrix. This section will study the spatial distribution of fishes in the North Sea. The abundance of fishes will be average over the period 1985-2015, losing the temporal information from the original dataset.
-
-We create a new matrix `IBTS_space` which contain the average abundance for the 7 RA (in rows) and 65 species (in columns).
-```{r, collapse=TRUE, comment ="", fig.path='figures/'}
-IBTS_space <- apply(IBTS_tensor,c(3,1),mean)
-dim(IBTS_space) #the new matrix has 7 rows (areas) and 65 columns (species)
 ```
 
-#### Checking the distribution of the data
-Principal Component Analysis, and other multivariate analysis in general, are sensible to outliers. So beforehand, one has to be check if the data is not too skewed. If it is the case, it is recommended to log (or square root) transform the data.
-
-```{r, collapse=TRUE, fig.show='hide', comment ="", fig.path='figures/'}
-#boxplot() is used to look at the distribution
-boxplot(as.vector(IBTS_space), main="raw CPUE")
-#The CPUE is very skewed, one can not see the difference between the 1st quarter, the median and the 3rd quarter
-#So data should be log transformed
-IBTS_logspace <- log(IBTS_space+1)
-#The new distribution of the log transformed CPUE
-boxplot(as.vector(IBTS_logspace), main="log CPUE")
-```
-
-```{r, echo=FALSE, fig.path='figures/'}
-par(mfrow=c(1,2), mar=c(3,3,3,1))
-boxplot(as.vector(IBTS_space), main="raw CPUE")
-boxplot(as.vector(IBTS_logspace), main="log CPUE")
-```
-
-#### Scaling the data
-The function used to run Principal Components Analysis normalized (i.e. center and scale) the variables by default. It is important to keep that step in mind. An illustration of the normalisation is given in the figures below. 
-```{r, collapse=TRUE, echo=FALSE, comment ="", fig.path='figures/'}
-par(mfrow=c(2,1), mar=c(2,4,3,1))
-boxplot(IBTS_logspace, main="Abundance", ylab="CPUE in log", 
-        xaxt="n")
-mtext("Species", side = 1, line = 0)
-boxplot(scale(IBTS_logspace), main="Anomaly (= abundance normalized per species)", 
-        ylab="Anomaly", xaxt="n")
-mtext("Species", side = 1, line = 0)
->>>>>>> parent of 217475a... First draft
-```
-
-### Principal Component Analysis
-
-#### Run a PCA and choose the correct number of PC.
-The PCA is run with the function `dudi.pca`. The data is normalized with the options `scale` and `center` set to `TRUE`. The function is interactive, showing you a scree plot: the variance explained by the successive Principal Components (PC)
-
-***
-
-<<<<<<< HEAD
 *Table 1: Description of the variables*  
 
 Name       | Description
@@ -329,15 +176,8 @@ Flounder   | CPUE of Flounder (*Platichthys flesus*)
 Plaice     | CPUE of Plaice (*Pleuronectes platessa*)
 Sprat      | CPUE of Sprat (*Sprattus sprattus*)
 TotCPUE    | Total CPUE of the 5 main species
-=======
-The PCA algorithm builds many Principal Component (PC), but not all of the PC perform well in simplifying the information. To choose the correct number of PC to be kept, there are many conflicting methods. The one I recommend is the scree test (Cattell, 1966): graphical detection of a bend in the distribution of the successive variance explained. As a comparison, a PCA run on random data will not find *strong* PC, i.e. PC can not reduce the dimensionality of the data. On the contrary, in real world data, usually we have a bend between successive variance explained by PC. Before the bend, the PCs reduce well the dimensionality of the data and should be kept (i.e. there is a significant pattern); after the bend, PC should be discarded (i.e. it is only noise). 
->>>>>>> parent of 217475a... First draft
 
-![ ](figures/SelectPC.png)
 
-***
-
-<<<<<<< HEAD
 For a proper analysis, one should conduct an exploratory analysis of this dataset to understand the distribution of each variables, and the interaction between these variables. But for brevity, we will just quickly identify the dominant species per haul.
 
 ```{r, fig.path='Figures/', fig.height=4.5, fig.width=5}
@@ -346,44 +186,8 @@ species <- c("Herring", "Cod", "Flounder", "Plaice", "Sprat")
 abu <- hauls@data[,species]
 dom_sp <- as.factor(species[apply(abu, 1, which.max)])
 table(dom_sp)
-=======
-```{r, eval=FALSE, fig.path='figures/'}
-pca_space=dudi.pca(IBTS_logspace, scale = TRUE, center = TRUE)
 ```
 
-**Select the number of axes: **
-
-```{r, echo=FALSE, comment ="", fig.height=4, fig.width=6, fig.path='figures/'}
-pca_space=dudi.pca(IBTS_logspace, scannf = FALSE, nf=2)
-barplot(inertia.dudi(pca_space)$TOT$inertia, ylab="Percentage of variance", xlab="PC")
-```
-
-In our case, a bend can be seen on the scree plot after the second PC. So, **please type 2 and press Enter**.
-
-The function `inertia.dudi` show how much variance is explained by the successive PC.
-```{r, comment ="", fig.path='figures/'}
-#To see how much variance the axes explain:
-inertia.dudi(pca_space)$TOT
-```
-In our case, the first PC explains 41% of the variance, the two first PC together explain 62% of the variance.
-
-#### Interpretation of the PC.
-The variable `pca_space`, result of the `dudi.pca`, contains two important matrices: `co`with the projetion of columns in the two PC; and `li` with the projection of the rows in the two PCs. **All PC kept in the analysis should be interpreted.**  
-We can see the projection in a table directly by typing the name of these object, or by using graphical function `s.label()`.
-```{r, comment ="", fig.height=3.5, fig.path='figures/'}
-pca_space$li # or pca_space$co
-par(mfrow=c(1,2), mar=c(0,0,0,0))
-#Show the weight of the variables:
-s.label(pca_space$li, xax=1, yax=2)
-s.label(pca_space$co, xax=1, yax=2, clabel = 0.4)
->>>>>>> parent of 217475a... First draft
-```
-
-The first PC (x-axis) make the difference between the northern NS (RA 1, 2 and 3 have negative weights, projected on the left side) and the southern NS (RA 5 and 6 have positive weights, projected on the right side).  
-The second PC (y-axis) make the difference between the South-Eastern NS (RA 7 have negative weight, projected on the lower side) and the rest of northern or western NS (RA 1 and 5 have positive weights, projected on the upper side).  
-The species projection (right side) allow us to see differences between species, but the high number of species makes it difficult to characterize the species. One solution is to group these species, i.e. simplify the number of species into a smaller number of groups, and then characterize these new groups.
-
-<<<<<<< HEAD
 #### Visualize the shapefile
 A shapefile can be plotted with the same function `plot()`. 
 
@@ -407,21 +211,10 @@ logCPUE <- log(hauls@data$totCPUE)
 
 #Size of the dot, proportional to the log of total catch
 size <- 2*logCPUE/max(logCPUE) #ratio between 0 and 2 of the total catch
-=======
-### Clustering the species
-Clustering is a subject by itself, here we will only see quickly one of its most famous method: Hierarchical clustering. It works in 4 steps: 
 
-1. Compute the distances between each objects. 
-2. Build a tree according to a given joining criteria
-3. Choose the number of cluster depending on the topology of the dendogram,
-4. Create the clusters and interpret them
->>>>>>> parent of 217475a... First draft
+#Set the palette of colors for the 4 dominant species
+pal <- brewer.pal(4, "Set2")
 
-```{r, comment ="", fig.path='figures/', fig.height=5, fig.width=6}
-#1. Compute the distance between species
-dist_species=dist(pca_space$co, method = "euclidean")
-
-<<<<<<< HEAD
 #Plot the hauls with 'cex' telling the size of the dot, and 'col' the color
 plot(hauls, pch=16, cex=size, col=pal[dom_sp])
 
@@ -435,11 +228,11 @@ axis(1)
 axis(2)
 ```
 
-***
+
 #### Your turn - Create a map of cod catches  
 
 1. Plot the hauls with circle (`pch=16`) of size proportional to the cod CPUE (don't forget to log-transformed the CPUE).
-2. Change the symbol type when cod is the dominant species into a triangle (`pch=17`). *Use the function `ifelse()` to test if cod is the dominant species*
+2. Change the symbol type when cod is the dominant species into a triangle (`pch=17`). *Hint: use the function `ifelse()` to test if cod is the dominant species*
 3. Add the country borders, a title and a legend. You should get a map similar to the one below:
 
 ```{r, echo=FALSE, results='hide', fig.path='Figures/', fig.height=5, fig.width=6}
@@ -480,27 +273,10 @@ map("worldHires", col="grey90", border="grey50",
     fill=TRUE, add=TRUE)
 legend("topleft", legend = c("dominant catch", "non-dominant"), 
        col = c("green4", "green3"), pch=c(17,16))
-=======
-#2. Build a tree with Ward method
-den=hclust(dist_species,method = "ward.D2")
-
-#3. Plot the dendogram
-par(mar=c(2,3,3,1))
-plot(den, hang=-1, ax = T, ann=T, xlab="", sub="", cex=0.6)
-
-#Choosing the number of cluster
-nclust<-5
-
-#Visualize the cutting
-rect.hclust(den, k=nclust, border="dimgrey")
->>>>>>> parent of 217475a... First draft
 ```
 
-There are different linkage criteria (criterion used to group two objects). The most common ones are: *Single* (minimum distance between elements of each cluster), *Complete* (maximum distance between elements of each cluster), *Average* (mean distance between elements of each cluster, also called UPGMA) and *Ward* (decrease in variance for the cluster being merged). *Ward* linkage (Ward, 1963) is known to be more suitable for spherical data, and in most of the case, gives the best results. I invite you to try other linkage criteria by changing the parameter `method = ` in the function `hclust`. Do you find the same clusters?  
+## C. Crossing points and raster
 
-In the graph above, the question is where to put a horizontal line on the dendogram to create the clusters. The number of clusters should not be too sensitive of the height of the line. In our case, 5 clusters seem appropriate. We can now visualize how the hierarchical clustering grouped the species in 5 clusters on the two first PC.
-
-<<<<<<< HEAD
 #### Visually overlay raster and points
 The goal of this section is to get the depth information from the raster at the position of each haul. The first step is to map them together to be sure the projections of the vector and the raster are equal and get a first idea of what should be the results. Therefore, the raster will be plotted as background and the vector object will be added on top with the argument `add=TRUE`.
 
@@ -531,7 +307,7 @@ plot(hauls$Depth, hauls_depth, xlab="Depth from BITS",
 abline(a=0, b=1) #add the y=x line
 ```
 
-***
+
 #### Your turn: 
 1. Calculate the difference between the depth value given in the attribute table of the shapefile and the information extracted from GEBCO. What is the maximum difference (in m)?
 2. Map the depth difference with the size of the circle proportional to the absolute difference, and with colors informing the sign of the difference (green if positive, else red).
@@ -578,54 +354,16 @@ axis(2)
 
 ## D. Crossing points with polygons
 
-#### Seabed habitats
+### Seabed habitats
 The European Marine Observation and Data Network provide data on Seabed Habitats (Cameron and Askew ,2011; http://www.emodnet.eu/). The shapefile `Baltic_Habitats_EUSEaMap2011.shp` is a simplified version of the habitat mapping carried out in 2011.
-=======
-```{r, comment ="", fig.path='figures/'}
-#4. Create the clusters
-clust_space <- as.factor(cutree(den, k=nclust))
 
-#Visualize the cluster in the PC axis
-s.class(pca_space$co,fac=clust_space, col=rainbow(nclust),xax=1,yax=2)
-```
-
-These clusters should be interpreted with the previous interpretation of the PC. For example, 
-
-* Cluster 1 (in red) has high value in PC1, and above average value in PC2. So it groups species that lives in the southern North Sea (high PC1), with a preference in the south-western side (high PC2).  
-* Cluster 2  (in yellow in the graph above) groups species mainly located in entrance to the Skagerrak, RA7 (low PC2) but that can spread in the north (low PC1). This cluster is heterogeneous, with the largest ellipse in the figure above.  
-* Cluster 3 (in green) groups species mainly located in southern NS (high PC1), with a preference on its eastern side (low PC2).  
-
-### Your turn: 
-1. How would you interpret the clusters 4 and 5 ?
-2. How many species are located mainly in the south-west of the North Sea (RA 5, i.e. grouped in cluster 1) ?
-3. In which cluster is grouped Saithe (*Pollachius virens*)?
-4. Depending on your time and your interest, you can either: 
-    + change the initial matrix and run the same analysis, but categorizing species on their temporal variation over the North Sea (averaged over RA) with the matrix defined as: `IBTS_time <- apply(IBTS_tensor,c(2,1),mean)`
-    + change the linkage method in the clustering algorithm and compare the clusters
-    + or go directly to the next step: multivariate analysis in 3 dimension.
-
-#### Solution
-1. Cluster 4 (in blue) groups species spread exclusively in the northern NS (high PC1 and high PC2). Cluster 5 (in purple) groups species in majority either in the northern extremity (RA1) or the southwestern community (RA5) but not in RA 7 (high PC2)
-
-```{r, comment ="", fig.path='figures/'}
-#2.
-table(clust_space) #There are 14 species in cluster 1
-#3.
-clust_space[names_tensor[[1]]=="Pollachius virens"] #Saithe is in cluster 4
+```{r, results='hide'}
+dir <- "Data/Baltic_Habitats_EUSEaMap2011.shp"
+name <- "Baltic_Habitats_EUSEaMap2011" 
+habitats <- readOGR(dir,name)
 ```
 
 
-***
-
-## C. Three dimension: Tensor Decomposition
-
-![ ](figures/3DPTA_illu.png)  
-
->>>>>>> parent of 217475a... First draft
-
-### Preparing the dataset
-
-<<<<<<< HEAD
 **For Mac users only**:
 Annoyingly, R installed on a Mac OS X takes a very long time to plot *heavy* shapefiles. A solution is to use the cairo graphic library in X11. You will have to load the package `cairo` and open a X11 windows before the next step. 
 ```{r, eval=FALSE, results='hide'}
@@ -634,7 +372,7 @@ require(Cairo)
 X11(type="cairo")
 ```
 
-***
+
 #### Your turn - Access information and visualize the shapefile 
 1. Does the projection system of the habitat match the shapefile of the hauls previously loaded?
 2. Are the two shapefiles overlapping? Which one has the largest extent?
@@ -643,6 +381,7 @@ X11(type="cairo")
 5. Visualize (= map) the `habitat` shapefile, and represent the different values of the variable `Grouped`.
 6. Add the location of the hauls (stored in variable `hauls`).
 7. Last, add a legend, a title, axis and you should get a map similar to the one below.
+
 
 ```{r, echo=FALSE, results='hide', fig.path='Figures/', fig.height=7, fig.width=6}
 plot(habitats, col=brewer.pal(9, "Set3")[habitats$Grouped], 
@@ -654,21 +393,12 @@ box()
 axis(1)
 axis(2)
 ```
-=======
-#### Checking the distribution of the data
-Like with PCA, we have to check the skewness of the data and log transform it if it is highly skewed.
->>>>>>> parent of 217475a... First draft
 
-```{r, collapse=TRUE, fig.show='hide', comment ="", fig.path='figures/'}
-#boxplot() is used to look at the distribution
-boxplot(IBTS_tensor, main="raw CPUE")
-#Data should be log transformed
-IBTS_logtensor <- log(IBTS_tensor+1)
-#The new distribution of the log tranformed CPUE
-boxplot(IBTS_logtensor, main="log CPUE")
-```
+#### Solution: 
+```{r, eval=FALSE, results='hide', fig.path='Figures/'}
+#1.
+proj4string(habitats) #equal to proj4string(hauls)
 
-<<<<<<< HEAD
 #2.
 bbox(habitats) #larger than bbox(hauls)
 # habitat and hauls data are overlapping, habitat has the largest extent 
@@ -700,14 +430,15 @@ axis(1)
 axis(2)
 ```
 
-#### Crossing points with polygons
+### Overlay points with polygons
 To compute the spatial overlay between two vectors (e.g. points with polygons), the function `over(x, y)` makes overlay at the spatial locations of object x it retrieves the indexes or attributes from spatial object y.
 
-```{r, results='hide', fig.path='Figures/', fig.height=6, fig.width=6}
+```{r, fig.path='Figures/', fig.height=6, fig.width=6}
 hauls_hab <- over(hauls, habitats) 
 dim(hauls_hab)
 ```
 The results of the function `over()` is a data.frame with 158 rows (corresponding to our 158 hauls) and 4 columns (corresponding to the 4 variables in the habitat attribute table). 
+
 
 #### Your turn - Visualize extracted information: 
 1. How many hauls were carried out in "Shelf muds" habitat?
@@ -736,58 +467,15 @@ legend("topleft", legend = shortnam, col = pal[table(hauls_hab$Grouped)>0],
 box()
 axis(1)
 axis(2)
-=======
-```{r, echo=FALSE, fig.path='figures/'}
-par(mfrow=c(1,2), mar=c(3,3,3,1))
-boxplot(as.vector(IBTS_tensor), main="raw CPUE")
-boxplot(as.vector(IBTS_logtensor), main="log CPUE")
 ```
 
-#### Scaling the data
-Contrary to PCA, the normalization of a tensor is not straightforward, and have to be done manually before running a PTA. Here, we decided to normalize the values per species and saved them in a new tensor `IBTS_logscale`.
 
-```{r, collapse=TRUE, comment ="", fig.path='figures/'}
-#Scaling per species
-#Create a new empty array
-IBTS_logscale<-array(0,dim=dim(IBTS_tensor))
-#Loop scanning each species
-for (i in 1:dim(IBTS_tensor)[1]){
-  #Calculating the mean and sd of the log CPUE for species i
-  ma<-mean(IBTS_logtensor[i,,])
-  sa<-sd(IBTS_logtensor[i,,])
-  #Saving the anomaly in the array
-  IBTS_logscale[i,,]<-(IBTS_logtensor[i,,]-ma)/sa
-}
-#Copy the labels to the new array
-dimnames(IBTS_logscale)<-dimnames(IBTS_tensor)
->>>>>>> parent of 217475a... First draft
-```
+#### Solution: 
+```{r, eval=FALSE, results='hide', fig.path='Figures/'}
+#1.
+table(hauls_hab$Grouped)
 
-### Run a PTA and choosing the number of PT.
-#### Run the PTA 
-The PTA is run with the function `PTA3`. The number of principal tensor is indicated by `nbPT` and `nbPT2`. One chooses the number of principal tensors at each *level* of analysis by `nbPT`, the last level (2-modes analysis) is fixed by `nbPT2`.  
-The Principal Tensor Analysis computed three main principal tensor and their two mode associated principal tensors.
-```{r, comment ="", fig.path='figures/'}
-pta<-PTA3(IBTS_logscale, nbPT = 3, nbPT2 = 3, minpct = 0.1)
-summary.PTAk(pta,testvar = 0)
-```
-
-<<<<<<< HEAD
 #2.
-pal <- brewer.pal(9, "Set3")
-col_hab <- pal[hauls_hab$Grouped]
-size <- 2*logCPUE/max(logCPUE) #ratio between 0 and 2 of the total catch
-plot(hauls, pch=16, cex=size, col=col_hab)
-map("worldHires", col="grey90", border="grey50", 
-    fill=TRUE, add=TRUE)
-
-#3.
-#transform the variable to remove the categories with 0 observation
-hauls_hab$Grouped <- as.factor(as.character(hauls_hab$Grouped))
-boxplot(logCPUE~hauls_hab$Grouped, las=1, 
-        xlab="total catches (in log)", horizontal=TRUE)
-
-#3.
 pal <- brewer.pal(9, "Set3")
 col_hab <- pal[hauls_hab$Grouped]
 size <- 2*logCPUE/max(logCPUE) #ratio between 0 and 2 of the total catch
@@ -799,34 +487,17 @@ legend("topleft", legend = levels(hauls_hab$Grouped), col = pal,
 box()
 axis(1)
 axis(2)
+
+#3.
+#transform the variable to remove the categories with 0 observation
+hauls_hab$Grouped <- as.factor(as.character(hauls_hab$Grouped))
+boxplot(logCPUE~hauls_hab$Grouped, las=1, 
+        xlab="total catches (in log)", horizontal=TRUE)
 ```
 
 ## E. Cross polygons with raster
-=======
-#### Choosing the number of PT.
 
-To select the significant PT, we build the scree plot from the global variance explained.
-```{r, comment ="", fig.path='figures/'}
-#Create the scree plot
-out <- !substr(pta[[3]]$vsnam, 1, 1) == "*"
-gct<-(pta[[3]]$pct*pta[[3]]$ssX/pta[[3]]$ssX[1])[out]
-barplot(sort(gct, decreasing = TRUE), xlab="PT",
-        ylab="Percentage of variance")
-```
-
-A bend can be seen after 4 PT, so we will select the 4 PT with the best explaining power. Numerically, it corresponds to the PT 1, 6, 7 and 11 of our object `pta`
->>>>>>> parent of 217475a... First draft
-
-####Interpretation of PT.
-The plotting function per default allow to use the argument `mod` to select which dimension to plot, `nb1` and `nb2` to select which PT will be shown on x-axis and y-axis.
-For example, we plot the time and space components (the second and third dimension of the array, so `mod=c(2,3)`) projected on vs111 and vs222 (respectively the elements 1 and 11 of `pta`, so `nb1 = 1, nb2 = 11`):
-```{r, comment ="", fig.width=8, fig.path='figures/'}
-par(mfrow=c(1,2))
-plot(pta, mod=c(2,3), nb1 = 1, nb2 = 11, xpd=NA, lengthlabels = 4)
-plot(pta, mod=1, nb1 = 1, nb2 = 11, lengthlabels = 3)
-```
-
-<<<<<<< HEAD
+### Load GlobColour raster
 The GlobColour project provide a data set of Ocean Colour products merged from different sensors (MERIS, MODIS AQUA, SeaWIFS and VIIRS) to ensure data continuity, improve spatial and temporal coverage and reduce data noise. The data is available at daily, weekly or monthly time step with a spatial resolution of 1km over Europe (around 0.01$^\circ$) and 1/24$^\circ$ globally. Dataset can be freely downloaded at : http://hermes.acri.fr/.
 
 The data provided here for this example is the Chlorophyll concentration (mg/m3) of July 2015 computed using the GSM model (Maritorena and Siegel, 2005). The main assumption is that phytoplankton concentration dominates over inorganic particles. The chlorophyll concentration is commonly used as a proxy for the biomass of the phytoplankton
@@ -873,42 +544,15 @@ dim(ICESrect)
 proj4string(GColor072015)
 proj4string(ICESrect)
 #both layers in longlat, WGS84
-=======
-We can see from the plot above that vs111 characterize the space (green crosses representing RA are spread over vs111) and vs222 characterize the time (red triangles representing years are spread over vs222).  
-vs111 makes the difference between the northern NS (RA 1, 2 and 3 have negative weights, projected on the left side) and the southern NS (RA 5 and 6 have positive weights, projected on the right side).  
-vs222 shows a temporal trend and makes the difference between the period 1985-1998 (years before 1998 have negative weights, projected on the lower side) and the recent period 2003-2015 (years after 2003 have positive weights, projected on the upper side).  
-The species projection (right side, created with `mod=1`) allow us to see the species plotted on these two PT. For example, we can see Cod (abbreviated *Gad*) in the upper part: it is the species with the strongest decrease in abundance (the highest point in vs222), and doesn't have clear spatial north-south pattern. However, the high number of species makes it difficult to characterize each species (suggesting the need for clustering).
 
-Similar plot can be done for the two other significant PT
+#4.
+bbox(ICESrect)
+plot(GColor072015, xlim=c(4,10), ylim=c(53,56), 
+     col=brewer.pal(9, "Greens"))
 
-```{r, comment ="", fig.width=8, fig.height=6,fig.path='figures/'}
-par(mfrow=c(2,2))
-plot(pta, mod=c(2,3), nb1 = 1, nb2 = 6, xpd=NA, lengthlabels = 4)
-plot(pta, mod=1, nb1 = 1, nb2 = 6, xpd=NA, lengthlabels = 4)
-plot(pta, mod=c(2,3), nb1 = 1, nb2 = 7, xpd=NA, lengthlabels = 4)
-plot(pta, mod=1, nb1 = 1, nb2 = 7, xpd=NA, lengthlabels = 4)
-```
+#5.
+plot(ICESrect, add=TRUE)
 
-31vs111 are temporal mode PT associated with vs111, meaning that vs111 and 31vs111 share the same temporal component. This feature can be seen with the straight line representing the projection of the years on these PT. 
-
-Another way to represent the spatiotemporal variations of the PT is to use a 2D representation, with x-axis being the time and y-axis being the space. The graphical functions are out of scope of this tutorial but presented here to help the interpretation.
-
-![ ](figures/PTA_Inter.png)  
-
->>>>>>> parent of 217475a... First draft
-
-###Clustering
-We use the same approach as before, but with the species projected on the 4 PT.
-```{r, comment ="", fig.path='figures/'}
-#Create the matrix with the projection of species on the 4 PT
-keep <- c(1, 6, 7, 11) # PT that are kept in the analysis
-coo<-t(pta[[1]]$v[c(keep),])
-labkeep <- paste0(pta[[3]]$vsnam[keep], " - ", round((100 * (pta[[3]]$d[keep])^2)/pta[[3]]$ssX[1],1), "%")
-
-#1. Compute the distance between species
-dist1=dist(coo, method = "euclidean")
-
-<<<<<<< HEAD
 #6.
 text(ICESrect, label=ICESrect$ICESNAME, adj=1, cex=0.5)
 map("worldHires", col="black", add=TRUE)
@@ -919,29 +563,34 @@ map("worldHires", col="black", add=TRUE)
 ####Extract mean values per polygon
 Our goal is to get the Chlorophyll concentration of the pixels inside each polygons. The same function `extract(raster, vector)` is used, with an extra argument `fun=`, to aggregate values per polygon.
 
-```{r, results='hide', fig.path='Figures/', fig.height=5.5, fig.width=7}
+```{r, fig.path='Figures/', fig.height=5.5, fig.width=7}
 ICESGColor_mean <- extract(GColor072015, ICESrect, fun=mean, na.rm=TRUE)
 dim(ICESGColor_mean)
 ```
-ICESGColor_mean contain 16 values corresponding to the average Chlorophyll concentration per polygons. 
+ICESGColor_mean contains 16 values corresponding to the average Chlorophyll concentration per polygons. 
 
 #### Visualize the extracted information
 We can visualize the average value in a map. The function `colscale()` create a uniform scale of colors from the given range of values and the number of colors in a palette. The function `add.colscale()` plot the color scale on a existing map.
 
 ```{r, results='hide', fig.path='Figures/', fig.height=5.5, fig.width=7}
+#Choose the palette colors
 pal <- brewer.pal(9, "Greens")
+#Create the color scale
 col_mean <- colscale(ICESGColor_mean, pal)
+#Map the rectangle according to the color scale
 plot(ICESrect, col=col_mean$col)
+#Add country border and axis
 map("worldHires", col="black", add=TRUE)
 box()
 axis(1)
 axis(2)
+#Add a color scale on the map
 add.colscale(col_mean$br, pal,posi="topleft", lab="Chl (mg/m3)")
 ```
 
 ####Extract all the pixel values per polygon
 Instead of averaging the values per polygon, one can extract all the values which fit inside the polygons with the function extract (and without the argument fun=). The result is a list of 16 elements (corresponding to the 16 ICES rectangles). 
-```{r, results='hide', fig.path='Figures/'}
+```{r, fig.path='Figures/'}
 ICESGColor <- extract(GColor072015, ICESrect)
 typeof(ICESGColor)
 length(ICESGColor)
@@ -957,61 +606,6 @@ boxplot(ICESGColor, las=2, ylab="Chl concentration (mg/m3)")
 lines(ICESGColor_mean, lwd=2, col="red")
 ```
 
-## References
-=======
-#2. Build a tree with Ward linkage
-den=hclust(dist1,method = "ward.D2")
-
-#3. Plot the dendogram
-par(mar=c(1,3,1,1))
-plot(den, hang=-1, ax = T, ann=F, xlab="", sub="",labels = FALSE)
-
-#Choose the number of clusters
-nclust<-6
-
-#Visualize the cutting
-rect.hclust(den, k=nclust, border=rainbow(nclust)[c(6,5,2,4,3,1)])
-```
-
-The dendogram suggest to create 6 clusters. It is now important to interpret the clusters by projecting them on the PT.
-
-```{r, comment ="", fig.width=9, fig.height=4, fig.path='figures/'}
-#4. Create the clusters
-clust_3D <- as.factor(cutree(den, k=nclust))
-
-#Visualize them 
-par(mfrow=c(1,3))
-s.class(coo, fac = clust_3D, xax=1, yax=2, col=rainbow(nclust), clabel = 2)
-text(min(coo[,1])-0.03,0, labkeep[2], srt=90, xpd=NA, cex=1.5)
-text(0,max(coo[,2])+0.02, labkeep[1], xpd=NA, cex=1.5)
-s.class(coo, fac = clust_3D, xax=1, yax=3, col=rainbow(nclust), clabel = 2)
-text(min(coo[,1])-0.03,0, labkeep[3], srt=90, xpd=NA, cex=1.5)
-text(0,max(coo[,3])+0.02, labkeep[1], xpd=NA, cex=1.5)
-s.class(coo, fac = clust_3D, xax=1, yax=4, col=rainbow(nclust), clabel = 2)
-text(min(coo[,1])-0.03,0, labkeep[4], srt=90, xpd=NA, cex=1.5)
-text(0,max(coo[,4])+0.02, labkeep[1], xpd=NA, cex=1.5)
-```
-
-* Cluster 1 is the southern community with high abundance in RA5 and no temporal pattern.
-* Cluster 2 is the community with decreasing abundance and no clear spatial pattern.
-* Cluster 3 is the South-East community with small increase in abondance
-* Cluster 4 is the northern community with high abundance in RA1 and no temporal trend.
-* Cluster 5 is the North-West community with a small increase in abondance
-* Cluster 6 is the increasing community, mainly pronounced in RA 1, 3 and 5
-
-![ ](figures/PTA_GroupInter.png)  
-
-##Summary
->>>>>>> parent of 217475a... First draft
-
-Multivariate analysis are methods to simplify complex and multidimensional dataset. The dimensions are simplified with the objective of keeping most of the variance. In this process, the information and the noise are separated; the main patterns being revealed by the principal components. Multivariate analysis are data-mining tools, in other words they are not predictive or mechanistic tools but data-driven. They can help to visualize and characterize what information is hidden in large dataset.
-
-![ ](figures/Summary.png)
-
-<<<<<<< HEAD
-ICES (2014) Manual for the Baltic International Trawl Surveys (BITS). Series of ICES Survey Protocols SISP 7 - BITS. 71 pp.
-=======
-
 ##References
 
 Cattell, R. B. (1966). *The scree test for the number of factors.* Multivariate behavioral research,1(2), 245-276.
@@ -1022,5 +616,12 @@ Leibovici, D. G. (2010). *Spatio-temporal multiway decompositions using principa
 
 Ward Jr, J. H. (1963). *Hierarchical grouping to optimize an objective function*. Journal of the American statistical association, 58(301): 236-244.
 
+##Going further
+Following is a list of tutorials and books that covers and go beyond the scope of this course.
 
->>>>>>> parent of 217475a... First draft
+- Hijmans R., *Spatial Data Analysis and Modeling with R*, http://www.rspatial.org/
+- Merow C., *Ecology, Statistics and Data Science with R*, https://cmerow.github.io/RDataScience/index.html
+- Wilson A., *R Data Science*, http://adamwilson.us/RDataScience/index.html
+- Lovelace R., *Introduction to visualising spatial data in R*, http://github.com/Robinlovelace/Creating-maps-in-R
+- Hengl, T. (2009). *A practical guide to geostatistical mapping*, Free book that can be download at : http://spatial-analyst.net/book/system/files/Hengl_2009_GEOSTATe2c1w.pdf
+- Bivand R., Pebesma E. and Gomez-Rubio V., (2013) *Applied Spatial Data Analysis with R*, UseR! Series, Springer, 405pp.
