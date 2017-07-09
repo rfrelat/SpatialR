@@ -1,12 +1,11 @@
 ---
 title: "Spatial analysis with R"
+subtitle: "Hand-on multidimensional examples"
 author: "Romain Frelat"
 date: "10 July 2017"
-output:
-  html_document: null
-  keep_md: yes
-  word_document: default
-subtitle: Hand-on multidimensional examples
+output:  
+  html_document:
+  keep_md: true 
 ---
 
 ## Objectives:
@@ -72,17 +71,17 @@ dim(temp072015)
 res(temp072015)
 ```
 The matrix is 242x257 pixels (in longitude x latitude) and has information for 50 depth layers.
-The depth layers values are stored in the `names` of the brick object.
+The depth layers' values are stored in the `names` of the brick object.
 ```{r, comment =""}
 #Remove the 'X' from the depth values
 depth <- as.numeric(gsub("X", "", names(temp072015)))
 #See the depth layers
 depth
 ```
-The depth layers goes from 2m to 700m depth, with an increasing interval between depth layer (from a 4m interval near the surface to a 40m interval at the bottom).
+The depth layers are from 2m to 700m depth, with an increasing interval between depth layer (from a 4m interval near the surface to a 40m interval at the bottom).
 
 #### Load the hauls shapefile
-We will extract the temperature profile of July 2015 for the hauls positions of BITS carried out in the first quarter of 2016. So let's load the shapefile *Hauls_BITSTVLQ1_2016.shp*.
+We will extract the temperature profile of July 2015 for the hauls positions of BITS carried out in the first quarter of 2016. Let's load the shapefile *Hauls_BITSTVLQ1_2016.shp*.
 ```{r, comment ="", results='hide'}
 dir <- "Data/Hauls_BITSTVLQ1_2016.shp"
 name <- "Hauls_BITSTVLQ1_2016"
@@ -90,7 +89,7 @@ hauls <- readOGR(dir,name)
 ```
 
 #### Visualize
-One of the key step before extracting values is to visualize the two datasets. The function `plot()` can create a map of a `brick` object, with the added parameters `y` telling which layer to be plotted. So let's  overlay the surface temperature (`y=1`) and the hauls. 
+One of the key step before extracting values is to visualize the two datasets. The function `plot()` can create a map of a `brick` object, with the added parameters `y` telling which layer to be plotted. We will overlay the surface temperature (`y=1`) and the hauls. 
 ```{r, comment ="", eval=FALSE, fig.path='Figures/', fig.height=7, fig.width=7}
 plot(temp072015, y=1, main="Surface temperature in July 2015", 
      col= brewer.pal(9,"YlOrRd"))
@@ -148,10 +147,10 @@ depth <- depth[depth<=120]
 ```
 
 ### B.3 Get surface and bottom temperature
-The surface teperature is stored in the first column of the matrix `haul_temp`. The bottom temperature is more complex, because the bottom correspond to different depth layer for different hauls. So first, we have to identify the bottom for each hauls, which is the last columns with no NA value for each row. 
+The surface teperature is stored in the first column of the matrix `haul_temp`. The bottom temperature is more complex, because the bottom corresponds to different depth layer for different hauls. So first, we have to identify the bottom for each haul, which is the last columns with no NA value for each row. 
 
 ```{r, comment =""}
-#Surface temperature : first column
+#Surface temperature: first column
 sst <- haul_temp[,1] 
 
 #Identify the bottom for each haul
@@ -184,7 +183,7 @@ add.colscale(col_sst$br, pal, posi="topleft",
 #### Your turn: 
 1. Make a similar map representing the bottom temperature.
 2. Add the information of total catches, with a variation of size of the circle (proportional to the log transformed catches).
-3. What is the maximum difference between the surface and the bottom temperature ? Is there a relation between the range of temperature (SST-SBT) and depth? 
+3. What is the maximum difference between the surface and the bottom temperature? Is there a relation between the range of temperature (SST-SBT) and depth? 
 
 ```{r, echo = FALSE, fig.path='Figures/', fig.height=4, fig.width=7}
 par(mfrow=c(1,2), mar=c(4,4,2,1))
@@ -248,7 +247,7 @@ plot(sst-sbt,-hauls$Depth, xlab="SST-SBT", ylab="Depth")
 
 ### B.4 Visualize the thermocline
 
-The value extracted does not only correspong to bottom and surface temperature but we can visualize the temperature-depth profile for each point. Because there are 158 points (i.e. hauls), we will use a `for` loop to draw a line for each point
+The value extracted are not only bottom and surface temperature but the full temperature-depth profile for each point. We can visualize the temperature-depth profile for the 158 points (i.e. hauls) using a `for` loop to draw a line for each point.
 
 ```{r, comment ="", fig.path='Figures/', fig.height=6, fig.width=6}
 plot(haul_temp[1,], -depth , type="l", , col="grey30",
@@ -381,7 +380,7 @@ ICESrect <- readOGR(dir,name)
 ```
 
 #### Visualize
-The primary production is skewed with lots of low values and few outliers with very high values, so we will define a non uniform color scale that represent well the small variations in Chl. Then, we can plot with the same color scale the 11 months with a loop `for`, incrementing the value of argument `y`. 
+The primary production is skewed with lots of low values and few outliers with very high values, so we will define a non-uniform color scale that represent well the small variations in Chl. Then, we can plot with the same color scale the 11 months with a loop `for`, incrementing the value of argument `y`. 
 
 ```{r, results='hide', fig.path='Figures/', fig.height=7, fig.width=8}
 #Define manually the color breaks
@@ -408,7 +407,7 @@ plot.scale(brk, pal = pal, lab="Chl concentration\n(mg/m3)")
 ```
 
 ### C2. Extract monthly primary production in ICES rectangle
-The fonction `extract()` used with polygons can aggregate values per polygon with the argument `fun=`. The issue here is that the pixel with a chlorophyll concentration of 0 are saved as NA, so they will be removed from the average calculation. In order to have a correct estimate of the average primary production, we need to calculate the sum per polygon and then dividing it per the number of pixel per polygons.
+The function `extract()` used with polygons can aggregate values per polygon with the argument `fun=`. The issue here is that the pixel with a chlorophyll concentration of 0 are saved as NA, so they will be removed from the average calculation. In order to have a correct estimate of the average primary production, we need to calculate the sum per polygon and then dividing it per the number of pixel per polygons.
 
 ```{r, fig.path='Figures/'}
 #compute the sum per polygon
@@ -423,7 +422,7 @@ dim(ICESGColor_mean)
 The extracted information are stored in `ICESGColor_sum`, `ICESGColor_length` and `ICESGColor_mean`, three data.frames of 16 rows (corresponding to the 16 ICES rectangles) and eleven columns (corresponding to the 11 months). 
 
 ### C3. Visualize the seasonal pattern
-We can plot the average seasonal pattern of the ICES rectangle. The function `layout` is a flexible framework that allow us to make multiple plot, matching the spatial ditribution of the ICES rectangle. 
+We can plot the average seasonal pattern of the ICES rectangle. The function `layout` is a flexible framework that allow us to make multiple plot, matching the spatial distribution of the ICES rectangle. 
 
 ```{r, results='hide', fig.path='Figures/'}
 #Layout to match the ICES spatial distribution
@@ -438,7 +437,7 @@ for (i in 1:nrow(ICESGColor_mean)){
 
 #### Your turn: 
 1. Extract the maximum chl concentration from the seasonal averages per ICES rectangle (*hint*: use the function `apply`)
-2. Extract the month of the maximum chl concentration per ICES rectangle (*hint*: again use the function `apply`).
+2. Extract the month of the maximum chl concentration per ICES rectangle (*hint*: again, use the function `apply`).
 3. Represent both the maximum primary production (as color scale) and the month (as text) on a map.
 
 You should get something like:  

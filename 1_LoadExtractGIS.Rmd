@@ -1,12 +1,11 @@
 ---
 title: "Spatial analysis with R"
+subtitle: "How to load, extract and analyse spatial data in R ?"
 author: "Romain Frelat"
 date: "10 July 2017"
-output:
-  html_document: null
-  fig_caption: yes
-  keep_md: yes
-subtitle: How to load, extract and analyse spatial data in R ?
+output:  
+  html_document:
+  keep_md: true 
 ---
 
 ## Objectives:
