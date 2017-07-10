@@ -28,3 +28,5 @@ See 2_MultiExamples for guidelines
 Enjoy !!
 
 Romain Frelat, 10th July 2017
+
+![](Figures/SpatialR_10072017_IHF.jpg) 
