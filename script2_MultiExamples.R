@@ -17,7 +17,6 @@ source("MapTools.R")
 ## B. Depth profile of the Baltic Sea -----------
 
 # B.1 Load and vizualize the data
-
 dir <- "Data/CMEMS_SMHI_PHYS_reanalysis_201507.nc"
 temp072015 <- brick(dir, varname="temp", lvar=4)
 
@@ -27,8 +26,7 @@ dim(temp072015)
 res(temp072015)
 
 #Depth layers
-#Remove the 'X' from the depth values
-depth <- as.numeric(gsub("X", "", names(temp072015)))
+depth <- temp072015@z[[1]]
 #See the depth layers
 depth
 
@@ -75,14 +73,10 @@ pal <- brewer.pal(9, "YlOrRd")
 # Assign a color to each haul according to sst
 col_sst <- colscale(sst, pal)
 #Create a map
-plot(hauls, col=col_sst$col, pch=16,
+plot(hauls, col=col_sst$col, pch=16, axes=TRUE,
      main="Surface temperature in July 2015")
 map("worldHires", col="grey90", border="grey50", 
     fill=TRUE, add=TRUE)
-#Add box and axis
-box()
-axis(1)
-axis(2)
 #Add the color scale
 add.colscale(col_sst$br, pal, posi="topleft", 
              lab="Temperature", cex=0.7)

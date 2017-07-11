@@ -5,7 +5,7 @@ author: "Romain Frelat"
 date: "10 July 2017"
 output:  
   html_document:
-  keep_md: true 
+    keep_md: true 
 ---
 
 ## Objectives:
@@ -71,10 +71,10 @@ dim(temp072015)
 res(temp072015)
 ```
 The matrix is 242x257 pixels (in longitude x latitude) and has information for 50 depth layers.
-The depth layers' values are stored in the `names` of the brick object.
+The depth layers' values are stored in the `z` attribute of the brick object.
 ```{r, comment =""}
-#Remove the 'X' from the depth values
-depth <- as.numeric(gsub("X", "", names(temp072015)))
+#Get the depth values
+depth <- temp072015@z[[1]]
 #See the depth layers
 depth
 ```
@@ -166,15 +166,11 @@ pal <- brewer.pal(9, "YlOrRd")
 # Assign a color to each haul according to sst
 col_sst <- colscale(sst, pal)
 #Plot the hauls
-plot(hauls, col=col_sst$col, pch=16,
+plot(hauls, col=col_sst$col, pch=16, axes=TRUE,
      main="Surface temperature in July 2015")
 #Add the country borders
 map("worldHires", col="grey90", border="grey50", 
     fill=TRUE, add=TRUE)
-#Add box and axis
-box()
-axis(1)
-axis(2)
 #Add the color scale
 add.colscale(col_sst$br, pal, posi="topleft", 
              lab="Temperature", cex=0.7)
@@ -192,15 +188,11 @@ size <- 2*log(hauls$totCPUE)/log(max(hauls$totCPUE))
 # Assign a color to each haul according to sst
 col_sbt <- colscale(sbt, pal)
 #Plot the hauls
-plot(hauls, col=col_sbt$col, pch=16,
+plot(hauls, col=col_sbt$col, pch=16, axes=TRUE,
      main="Bottom temperature", cex=size)
 #Add the country borders
 map("worldHires", col="grey90", border="grey50", 
     fill=TRUE, add=TRUE)
-#Add box and axis
-box()
-axis(1)
-axis(2)
 #Add the color scale
 add.colscale(col_sbt$br, pal, posi="topleft", 
              lab="Temperature", cex=0.7)
@@ -227,14 +219,10 @@ add.colscale(col_sbt$br, pal, posi="topleft",
 #ratio between 0 and 2 of the total catch (in log)
 size <- 2*log(hauls$totCPUE)/log(max(hauls$totCPUE)) 
 #Create a map
-plot(hauls, col=col_sbt$col, pch=16,
+plot(hauls, col=col_sbt$col, pch=16, axes=TRUE,
      main="Bottom temperature", cex=size)
 map("worldHires", col="grey90", border="grey50", 
     fill=TRUE, add=TRUE)
-#Add box and axis
-box()
-axis(1)
-axis(2)
 #Add the color scale
 add.colscale(col_sbt$br, pal, posi="topleft", 
              lab="Temperature", cex=0.7)
@@ -260,7 +248,7 @@ for (i in 2:nrow(haul_temp)){
 
 From the graphic above, the thermocline can be identified as the strong drop in temperature between 15 and 5 degrees. A good proxy of the thermocline depth could be the depth at which the temperature is 10 degrees.
 
-```{r, comment =""}
+```{r, comment ="", fig.path='Figures/'}
 #Detect the depth when the temperature is pass the 10 degrees threshold
 depth10 <- depth[apply(haul_temp>10, 1, sum, na.rm=TRUE)]
 #remove the hauls which never reach lower temperature than 10 degrees
@@ -288,14 +276,10 @@ for (i in 2:nrow(haul_temp)){
 abline(v=10, lty=3)
 
 #Create a map
-plot(hauls, col=col_dp10$col, pch=16,
+plot(hauls, col=col_dp10$col, pch=16, axes=TRUE,
      main="Depth at 10 degrees", cex=size)
 map("worldHires", col="grey90", border="grey50", 
     fill=TRUE, add=TRUE)
-#Add box and axis
-box()
-axis(1)
-axis(2)
 #Add the color scale
 add.colscale(col_dp10$br, pal,posi="topleft", 
              lab="Depth (m)")
@@ -309,14 +293,10 @@ col_dp10 <- colscale(depth10, pal)
 
 #2
 #Create a map
-plot(hauls, col=col_dp10$col, pch=16,
+plot(hauls, col=col_dp10$col, pch=16, axes=TRUE,
      main="Depth at 10 degrees", cex=size)
 map("worldHires", col="grey90", border="grey50", 
     fill=TRUE, add=TRUE)
-#Add box and axis
-box()
-axis(1)
-axis(2)
 #Add the color scale
 add.colscale(col_dp10$br, pal,posi="topleft", 
              lab="Depth (m)")
@@ -449,14 +429,11 @@ maxSea.abb <- month.abb[maxSea]
 
 pal <- brewer.pal(9, "Greens")
 colNPP <- colscale(maxNPP, pal)
-map("worldHires",  xlim=c(4,10), ylim=c(53,56), 
-    fill=TRUE, col="gray90", border="gray70")
-plot(ICESrect, col=colNPP$col, add=TRUE)
+plot(ICESrect, col=colNPP$col, axes=TRUE, 
+     main="Seasonal pic of primary production")
+map("worldHires", col=rgb(0.7,0.7,0.7, alpha=0.5), border="grey50", 
+    fill=TRUE, add=TRUE)
 text(ICESrect, maxSea.abb)
-box()
-axis(1)
-axis(2)
-title("Seasonal pic of primary production")
 add.colscale(colNPP$br, pal,posi="bottomright", lab="chl (mg/m3)", rd=0)
 ```
 
@@ -472,9 +449,13 @@ maxSea.abb <- month.abb[maxSea]
 #3
 pal <- brewer.pal(9, "Greens")
 colNPP <- colscale(maxNPP, pal)
-map("worldHires",  xlim=c(4,10), ylim=c(53,56), 
-    fill=TRUE, col="gray90", border="gray70")
-plot(ICESrect, col=colNPP$col, add=TRUE)
+plot(ICESrect, col=colNPP$col, axes=TRUE, 
+     main="Seasonal pic of primary production")
+#use of rgb() to have transparency
+map("worldHires", col=rgb(0.7,0.7,0.7, alpha=0.5), 
+    border="grey50", fill=TRUE, add=TRUE)
 text(ICESrect, maxSea.abb)
+add.colscale(colNPP$br, pal, posi="bottomright", rd=0,
+             lab="chl (mg/m3)", cex=0.7)
 ```
 

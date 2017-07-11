@@ -66,13 +66,9 @@ dom_sp <- as.factor(species[apply(abu, 1, which.max)])
 table(dom_sp)
 
 # Visualize the shapefile
-plot(hauls)
+plot(hauls, axes=TRUE)
 #Add a background of countries border
 map("worldHires", col="grey90", border="grey50", fill=TRUE, add=TRUE)
-#Add a box and axis
-box()
-axis(1)
-axis(2)
 
 # log transform CPUE
 logCPUE <- log(hauls@data$totCPUE)
@@ -84,15 +80,12 @@ size <- 2*logCPUE/max(logCPUE) #ratio between 0 and 2 of the total catch
 pal <- brewer.pal(4, "Set2")
 
 #Plot the hauls with 'cex' telling the size of the dot, and 'col' the color
-plot(hauls, pch=16, cex=size, col=pal[dom_sp])
+plot(hauls, pch=16, cex=size, col=pal[dom_sp], axes=TRUE)
 
 #Add a background, a legend and borders
 map("worldHires", col="grey90", border="grey50", fill=TRUE, add=TRUE)
 legend("topleft", legend = levels(dom_sp), col = pal,
        pch = 16, title="dom. species")
-box()
-axis(1)
-axis(2)
 
 #Your turn : ....................................
 
@@ -103,7 +96,7 @@ plot(bathy, xlim=c(13, 22), ylim=c(54, 59),
      col = brewer.pal(9,"Blues"), main="Bathymetry and hauls")
 plot(hauls, add=TRUE)
 map("worldHires", col="grey90", border="grey50", 
-    fill=TRUE, add=TRUE)
+    fill=TRUE, add=TRUE, myborder=c(0:4))
 
 # Extract information from a raster
 hauls_depth <- extract(bathy, hauls)
@@ -159,12 +152,9 @@ pal <- brewer.pal(9, "Greens")
 #Create the color scale
 col_mean <- colscale(ICESGColor_mean, pal)
 #Map the rectangle according to the color scale
-plot(ICESrect, col=col_mean$col)
+plot(ICESrect, col=col_mean$col, axes=TRUE)
 #Add country border and axis
 map("worldHires", col="black", add=TRUE)
-box()
-axis(1)
-axis(2)
 #Add a color scale on the map
 add.colscale(col_mean$br, pal,posi="topleft", lab="Chl (mg/m3)")
 

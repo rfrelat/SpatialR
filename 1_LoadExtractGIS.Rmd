@@ -1,11 +1,11 @@
 ---
 title: "Spatial analysis with R"
-subtitle: "How to load, extract and analyse spatial data in R ?"
+subtitle: "How to load, extract and analyse spatial data in R?"
 author: "Romain Frelat"
 date: "10 July 2017"
 output:  
   html_document:
-  keep_md: true 
+    keep_md: true 
 ---
 
 ## Objectives:
@@ -191,14 +191,10 @@ table(dom_sp)
 A shapefile can be plotted with the same function `plot()`. 
 
 ```{r, results='hide', fig.path='Figures/', fig.height=5, fig.width=6}
-plot(hauls)
+plot(hauls, axes=TRUE)
 #Add a background of countries border
 map("worldHires", col="grey90", border="grey50", 
     fill=TRUE, add=TRUE)
-#Add a box and axis
-box()
-axis(1)
-axis(2)
 ```
 
 Colors (argument `col`), size (argument `cex`) and shape (argument `pch`) of the points can be changed to reflect information contained in the attribute table. As an example, we will plot the hauls with filled circle (`pch=16`), with size proportional to the total catch (log transformed), and with color indicating the dominant species of the catch. 
@@ -215,16 +211,13 @@ size <- 2*logCPUE/max(logCPUE) #ratio between 0 and 2 of the total catch
 pal <- brewer.pal(4, "Set2")
 
 #Plot the hauls with 'cex' telling the size of the dot, and 'col' the color
-plot(hauls, pch=16, cex=size, col=pal[dom_sp])
+plot(hauls, pch=16, cex=size, col=pal[dom_sp], axes=TRUE)
 
 #Add a background, a legend and borders
 map("worldHires", col="grey90", border="grey50", 
     fill=TRUE, add=TRUE)
 legend("topleft", legend = levels(dom_sp), col = pal,
        pch = 16, title="Dom. species")
-box()
-axis(1)
-axis(2)
 ```
 
 
@@ -240,14 +233,11 @@ size <- 2*logcod/max(logcod)
 pch_cod <- ifelse(dom_sp=="Cod", 17, 16)
 col_cod <- ifelse(dom_sp=="Cod", "green4", "green3")
 plot(hauls, pch=pch_cod, cex=size, col=col_cod,
-     main="Cod catches in 2016")
+     main="Cod catches in 2016", axes=TRUE)
 map("worldHires", col="grey90", border="grey50", 
     fill=TRUE, add=TRUE)
 legend("topleft", legend = c("dominant catch", "non-dominant"), 
        col = c("green4", "green3"), pch=c(17,16))
-box()
-axis(1)
-axis(2)
 ```
 
 #### Solution: 
@@ -318,14 +308,11 @@ col_dif <- ifelse(depth_dif>0, "green", "red")
 size_dif <- 4*abs(depth_dif)/max(abs(depth_dif))
 
 plot(hauls, pch=16, col=col_dif, cex=size_dif, 
-     main="Difference in depth")
+     main="Difference in depth", axes=TRUE)
 map("worldHires", col="grey90", border="grey50", 
     fill=TRUE, add=TRUE)
 legend("topleft", legend = c("measured > GEBCO", "measured < GEBCO"), 
        col = c("green", "red"), pch=16)
-box()
-axis(1)
-axis(2)
 ```
 
 #### Solution: 
@@ -341,14 +328,11 @@ plot(hauls, pch=16, col=col_dif, cex=size_dif)
 
 #3.
 plot(hauls, pch=16, col=col_dif, cex=size_dif, 
-     main="Difference in depth")
+     main="Difference in depth", axes=TRUE)
 map("worldHires", col="grey90", border="grey50", 
     fill=TRUE, add=TRUE)
 legend("topleft", legend = c("measured > GEBCO", "measured < GEBCO"), 
        col = c("green", "red"), pch=16)
-box()
-axis(1)
-axis(2)
 ```
 
 ## D. Crossing points with polygons
@@ -384,13 +368,10 @@ X11(type="cairo")
 
 ```{r, echo=FALSE, results='hide', fig.path='Figures/', fig.height=7, fig.width=6}
 plot(habitats, col=brewer.pal(9, "Set3")[habitats$Grouped], 
-     border=FALSE, main="Seabed habitat")
+     border=FALSE, main="Seabed habitat", axes=TRUE)
 legend("topleft", legend = levels(habitats$Grouped), 
        fill = brewer.pal(9, "Set3"), cex=0.8, bty="n")
 plot(hauls, add=TRUE)
-box()
-axis(1)
-axis(2)
 ```
 
 #### Solution: 
@@ -420,13 +401,10 @@ plot(hauls, add=TRUE)
 
 #7. 
 plot(habitats, col=col_hab, border=FALSE, 
-     main="Seabed habitat")
+     main="Seabed habitat", axes=TRUE)
 legend("topleft", legend = levels(habitats$Grouped), 
        fill = pal, cex=0.7, bty="n")
 plot(hauls, add=TRUE)
-box()
-axis(1)
-axis(2)
 ```
 
 ### Overlay points with polygons
@@ -458,14 +436,11 @@ par(mar=c(2,2,3,0.5), cex=0.9)
 pal <- brewer.pal(9, "Set3")
 col_hab <- pal[hauls_hab$Grouped]
 size <- 2*logCPUE/max(logCPUE) #ratio between 0 and 2 of the total catch
-plot(hauls, pch=16, cex=size, col=col_hab)
+plot(hauls, pch=16, cex=size, col=col_hab, axes=TRUE)
 map("worldHires", col="grey90", border="grey50", 
     fill=TRUE, add=TRUE)
 legend("topleft", legend = shortnam, col = pal[table(hauls_hab$Grouped)>0],
        pch = 16, title="Seabed habitat")
-box()
-axis(1)
-axis(2)
 ```
 
 
@@ -478,14 +453,11 @@ table(hauls_hab$Grouped)
 pal <- brewer.pal(9, "Set3")
 col_hab <- pal[hauls_hab$Grouped]
 size <- 2*logCPUE/max(logCPUE) #ratio between 0 and 2 of the total catch
-plot(hauls, pch=16, cex=size, col=col_hab)
+plot(hauls, pch=16, cex=size, col=col_hab, axes=TRUE)
 map("worldHires", col="grey90", border="grey50", 
     fill=TRUE, add=TRUE)
 legend("topleft", legend = levels(hauls_hab$Grouped), col = pal,
        pch = 16, title="Seabed habitat", cex=0.7)
-box()
-axis(1)
-axis(2)
 
 #3.
 #transform the variable to remove the categories with 0 observation
@@ -515,9 +487,9 @@ ICESrect <- readOGR(dir,name)
 ```
 
 #### Your turn:
-1. What is the resolution of the GlobColor raster loaded in latitude and longitude ?
-2. How many ICES rectangle are included in the *ICESrect_GermanBight* shapefile ?
-3. Do the raster and the shapefile share the same projection system ?
+1. What is the resolution of the GlobColor raster loaded in latitude and longitude?
+2. How many ICES rectangle are included in the *ICESrect_GermanBight* shapefile?
+3. Do the raster and the shapefile share the same projection system?
 4. Visualize the GlobColour raster in the extent of the *ICESrect_GermanBight*
 5. Add the ICES rectangle
 6. Add the name (variable `ICESNAME` from the attribute table) of each rectangle with the function `text()`, and add the countries border. You should get a map similar to the one below.
@@ -577,12 +549,10 @@ pal <- brewer.pal(9, "Greens")
 #Create the color scale
 col_mean <- colscale(ICESGColor_mean, pal)
 #Map the rectangle according to the color scale
-plot(ICESrect, col=col_mean$col)
+plot(ICESrect, col=col_mean$col, axes=TRUE)
 #Add country border and axis
 map("worldHires", col="black", add=TRUE)
-box()
-axis(1)
-axis(2)
+
 #Add a color scale on the map
 add.colscale(col_mean$br, pal,posi="topleft", lab="Chl (mg/m3)")
 ```
