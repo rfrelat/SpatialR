@@ -11,14 +11,14 @@ The data, guidelines and scripts can be downloaded in the [SpatialR.zip](https:/
 The workshop is divided in two section of approx. 2h each. 
 
 ## 1. How to load, extract and analyse spatial data in R?
-See [1_LoadExtractGIS](https://github.com/rfrelat/SpatialR/blob/master/1_LoadExtractGIS.md) for guidelines
+See [1_LoadExtractGIS](https://rfrelat.github.io/Spatial1_LoadExtractGIS.html) for guidelines
 - Load spatial data in R (vector and raster in different formats, including NetCDF). 
 - Access information from spatial data (projection system, extent, attribute table) 
 - Create maps
 - Overlay spatial data and extract information from raster and vectors
 
 ## 2. Hands-on multidimensional examples
-See [2_MultiExamples](https://github.com/rfrelat/SpatialR/blob/master/2_MultiExamples.md) for guidelines
+See [2_MultiExamples](https://rfrelat.github.io/Spatial2_MultiExamples.html) for guidelines
 - Understand the organisation of multidimensional data
 - Explore the temperature-depth profile of the Baltic Sea
 - Observe the seasonal pattern of primary production in the German Bight 
