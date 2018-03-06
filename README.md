@@ -1,6 +1,6 @@
-# SpatialR - Spatial analysis in R for marine scientists
+# Spatial analysis in R for marine scientists
 
-## The aims of this workshop is to : 
+#### The aims of this workshop is to : 
 - Feel more comfortable to work with spatial data 
 - Load spatial data in R and visualise it
 - Extract information from remote sensing or model dataset
