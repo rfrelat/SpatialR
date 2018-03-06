@@ -1,6 +1,11 @@
-# Spatial analysis with R
-Romain Frelat  
-10 July 2017  
+---
+title: "Spatial analysis with R"
+subtitle: "How to load, extract and analyse spatial data in R?"
+author: "Romain Frelat"
+output:  
+  html_document:
+    keep_md: true 
+---
 
 ## Objectives:
 * Load spatial data in R (vector and raster in different formats, including NetCDF).
@@ -12,7 +17,7 @@ Romain Frelat
 ##A. Getting ready:
 
 ####Get the data and R script:
-1. Get the zip file *SpatialR.zip* (can be downloaded: https://github.com/rfrelat/SpatialR/)
+1. Get the zip file [SpatialR.zip](https://github.com/rfrelat/SpatialR/raw/master/SpatialR.zip) (can be downloaded: https://github.com/rfrelat/SpatialR/)
 2. Unzip the archive in a new folder. The zip file contains data files, R-scripts and the present document as a pdf
 3. Open the R script *script1_LoadExtractGIS.R* with your favorite R editor (RStudio is recommended)
 4. Be sure to set the working directory (Session > Set Working Directory) to the directory where the script and the data are located.
