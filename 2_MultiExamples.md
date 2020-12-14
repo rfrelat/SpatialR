@@ -14,7 +14,7 @@ output:
   * Strengthen your GIS and mapping skills
 
 
-##A. Introduction:
+## A. Introduction:
 
 #### Network Common Data Form (NetCDF):
 In the previous session, we saw that the function `raster()` was able to load one raster (i.e. one value per pixel). The Unidata’s Network Common Data Form (NetCDF) was created to answer the needs of oceanographers and climatologists to save, share and process their multidimensional data. The raster package offers two different objects to load multidimensional rasters (multiple information for each pixel, like a 3D cube) and efficiently process them, `brick` (if information gathered in one file) and `stack` (if information spread in multiple files)
@@ -26,13 +26,13 @@ To read multidimensional NetCDF file, the loading function (either `raster()`, `
 - `level`: integer > 0. To select the 'level' (the 4th dimension variable) to use when the file has more than 3 dimensions.
 
 
-####Get ready:
+#### Get ready:
 1. Get the zip file [SpatialR.zip](https://github.com/rfrelat/SpatialR/raw/master/SpatialR.zip) (can be downloaded: https://github.com/rfrelat/SpatialR/)
 2. Unzip the archive in a new folder. The zip file contains data files, R-scripts and the present document as a pdf
 3. Open the R script *script2_MultiExamples.R* with your favorite R editor (RStudio is recommended)
 4. Be sure to set the working directory (Session > Set Working Directory) to the directory where the script and the data are located.
 
-####Load the package and needed functions
+#### Load the package and needed functions
 In the following tutorial, we will use seven packages and some home-made functions saved in the file `MapTools.R`. Let's first, load all these needed functions:
 
 ```r
@@ -55,7 +55,7 @@ Check also that the file `MapTools.R` is in your working directory.
 
 ### B.1 Load and vizualize the data
 
-####Load the temperature-depth layer
+#### Load the temperature-depth layer
 The Baltic Sea Physics Reanalysis was produced in 2014 at SMHI with the circulation model HIROMB (High- Resolution Operational Model for the Baltic). The data has a resolution of 3 nautical miles (5.5 km) and cover the period 1989 – 2015. It provides, among other informations, 3D fields of temperature and salinity. The present data was downloaded from the Copernicus Marine Environment Monitoring Service (CMEMS). In the following, we will focus only on the temperature in July 2015.  
 
 We want to load multidimensional information from one NetCDF file, so we will use create a `brick` object, loading only the temperature (`varname="temp"`) and having depth as a third dimension (`lvar=4`).
@@ -72,7 +72,7 @@ proj4string(temp072015)
 ```
 
 ```
-[1] "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"
+[1] "+proj=longlat +datum=WGS84 +no_defs"
 ```
 
 ```r
@@ -101,11 +101,11 @@ depth
 ```
 
 ```
- [1]   2.0   6.0  10.0  14.0  18.0  22.0  26.0  30.0  34.0  38.0  42.0
-[12]  46.0  50.0  54.0  58.0  62.0  66.0  70.0  74.0  78.0  82.5  87.5
-[23]  92.5  97.5 102.5 108.0 114.0 120.0 126.5 133.5 141.0 149.5 159.0
-[34] 169.5 182.0 197.5 216.5 240.0 269.0 303.0 340.5 380.0 420.0 460.0
-[45] 500.0 540.0 580.0 620.0 660.0 700.0
+ [1]   2.0   6.0  10.0  14.0  18.0  22.0  26.0  30.0  34.0  38.0  42.0  46.0
+[13]  50.0  54.0  58.0  62.0  66.0  70.0  74.0  78.0  82.5  87.5  92.5  97.5
+[25] 102.5 108.0 114.0 120.0 126.5 133.5 141.0 149.5 159.0 169.5 182.0 197.5
+[37] 216.5 240.0 269.0 303.0 340.5 380.0 420.0 460.0 500.0 540.0 580.0 620.0
+[49] 660.0 700.0
 ```
 The depth layers are from 2m to 700m depth, with an increasing interval between depth layer (from a 4m interval near the surface to a 40m interval at the bottom).
 
@@ -316,7 +316,7 @@ abline(v=10, lty=3)
 
 ### C1. Load and vizualize the data
 
-####Load the monthly primary production of 2015 per depth layer
+#### Load the monthly primary production of 2015 per depth layer
 The GlobColour project provide a continuous data set of Ocean Colour products merged from different sensors (MERIS, MODIS AQUA, SeaWIFS and VIIRS) to ensure data continuity, improve spatial and temporal coverage and reduce data noise. The data is available at daily, weekly or monthly time step with a spatial resolution of 1km over Europe (around 0.01$^\circ$) and 1/24$^\circ$ globally. Dataset can be freely downloaded at : http://hermes.acri.fr/.
 
 The data provided here for this example is the monthly Chlorophyll concentration (mg/m3) computed using the GSM model (Maritorena and Siegel, 2005). The main assumption is that phytoplankton concentration dominates over inorganic particles. The chlorophyll concentration is commonly used as a proxy for the biomass of the phytoplankton
@@ -343,8 +343,8 @@ time
 ```
 
 ```
- [1] "201501" "201502" "201503" "201504" "201505" "201506" "201507"
- [8] "201508" "201509" "201510" "201511"
+ [1] "201501" "201502" "201503" "201504" "201505" "201506" "201507" "201508"
+ [9] "201509" "201510" "201511"
 ```
 
 There are 11 files corresponding to the year 2015. The month of December is absent, because all the values are 0, there are no primary production in December in our area of interest.
@@ -364,7 +364,7 @@ proj4string(GColor2015)
 ```
 
 ```
-[1] "+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"
+[1] "+proj=longlat +datum=WGS84 +no_defs"
 ```
 
 ```r

@@ -14,15 +14,15 @@ output:
 * Overlay spatial data and extract information from raster and vectors
 
 
-##A. Getting ready:
+## A. Getting ready:
 
-####Get the data and R script:
+#### Get the data and R script:
 1. Get the zip file [SpatialR.zip](https://github.com/rfrelat/SpatialR/raw/master/SpatialR.zip) (can be downloaded: https://github.com/rfrelat/SpatialR/)
 2. Unzip the archive in a new folder. The zip file contains data files, R-scripts and the present document as a pdf
 3. Open the R script *script1_LoadExtractGIS.R* with your favorite R editor (RStudio is recommended)
 4. Be sure to set the working directory (Session > Set Working Directory) to the directory where the script and the data are located.
 
-####Load the needed packages and functions
+#### Load the needed packages and functions
 In the following tutorial, we will use seven packages and some home-made functions saved in the file `MapTools.R`. Let's first, load all these needed functions:
 
 ```r
@@ -67,7 +67,7 @@ proj4string(bathy)
 ```
 
 ```
-[1] "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"
+[1] "+proj=longlat +datum=WGS84 +no_defs"
 ```
 Here the projection system is `longlat`, i.e. the coordinates are not projected, and expressed in degrees in latitude and longitude. The datum is `WGS84` (World Geodesic System 1984) which is the most common datum nowadays. This projection system (`+proj=longlat +datum=WGS84`) is very common for output of models and dataset with global coverage. In the following examples, all the data have the same projection, but one has to keep in mind that the **coordinate reference systems is an important part of spatial data, and may be a source of error**.
 
@@ -170,7 +170,11 @@ proj4string(hauls)
 ```
 
 ```
-[1] "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"
+Warning in proj4string(hauls): CRS object has comment, which is lost in output
+```
+
+```
+[1] "+proj=longlat +datum=WGS84 +no_defs"
 ```
 
 ```r
@@ -563,7 +567,7 @@ map("worldHires", col="black", add=TRUE)
 
 ### Crossing polygons with raster
 
-####Extract mean values per polygon
+#### Extract mean values per polygon
 Our goal is to get the Chlorophyll concentration of the pixels inside each polygons. The same function `extract(raster, vector)` is used, with an extra argument `fun=`, to aggregate values per polygon.
 
 
@@ -597,7 +601,7 @@ add.colscale(col_mean$br, pal,posi="topleft", lab="Chl (mg/m3)")
 
 ![](Figures/unnamed-chunk-34-1.png)<!-- -->
 
-####Extract all the pixel values per polygon
+#### Extract all the pixel values per polygon
 Instead of averaging the values per polygon, one can extract all the values which fit inside the polygons with the function extract (and without the argument fun=). The result is a list of 16 elements (corresponding to the 16 ICES rectangles). 
 
 ```r
@@ -633,7 +637,7 @@ lines(ICESGColor_mean, lwd=2, col="red")
 
 ![](Figures/unnamed-chunk-36-1.png)<!-- -->
 
-##References
+## References
 
 Cattell, R. B. (1966). *The scree test for the number of factors.* Multivariate behavioral research,1(2), 245-276.
 
@@ -643,7 +647,7 @@ Leibovici, D. G. (2010). *Spatio-temporal multiway decompositions using principa
 
 Ward Jr, J. H. (1963). *Hierarchical grouping to optimize an objective function*. Journal of the American statistical association, 58(301): 236-244.
 
-##Going further
+## Going further
 Following is a list of tutorials and books that covers and go beyond the scope of this course.
 
 - Hijmans R., *Spatial Data Analysis and Modeling with R*, http://www.rspatial.org/

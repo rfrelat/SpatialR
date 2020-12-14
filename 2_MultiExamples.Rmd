@@ -14,7 +14,7 @@ output:
   * Strengthen your GIS and mapping skills
 
 
-##A. Introduction:
+## A. Introduction:
 
 #### Network Common Data Form (NetCDF):
 In the previous session, we saw that the function `raster()` was able to load one raster (i.e. one value per pixel). The Unidata’s Network Common Data Form (NetCDF) was created to answer the needs of oceanographers and climatologists to save, share and process their multidimensional data. The raster package offers two different objects to load multidimensional rasters (multiple information for each pixel, like a 3D cube) and efficiently process them, `brick` (if information gathered in one file) and `stack` (if information spread in multiple files)
@@ -26,13 +26,13 @@ To read multidimensional NetCDF file, the loading function (either `raster()`, `
 - `level`: integer > 0. To select the 'level' (the 4th dimension variable) to use when the file has more than 3 dimensions.
 
 
-####Get ready:
+#### Get ready:
 1. Get the zip file [SpatialR.zip](https://github.com/rfrelat/SpatialR/raw/master/SpatialR.zip) (can be downloaded: https://github.com/rfrelat/SpatialR/)
 2. Unzip the archive in a new folder. The zip file contains data files, R-scripts and the present document as a pdf
 3. Open the R script *script2_MultiExamples.R* with your favorite R editor (RStudio is recommended)
 4. Be sure to set the working directory (Session > Set Working Directory) to the directory where the script and the data are located.
 
-####Load the package and needed functions
+#### Load the package and needed functions
 In the following tutorial, we will use seven packages and some home-made functions saved in the file `MapTools.R`. Let's first, load all these needed functions:
 ```{r, message=FALSE}
 # To load and process GIS data
@@ -54,7 +54,7 @@ Check also that the file `MapTools.R` is in your working directory.
 
 ### B.1 Load and vizualize the data
 
-####Load the temperature-depth layer
+#### Load the temperature-depth layer
 The Baltic Sea Physics Reanalysis was produced in 2014 at SMHI with the circulation model HIROMB (High- Resolution Operational Model for the Baltic). The data has a resolution of 3 nautical miles (5.5 km) and cover the period 1989 – 2015. It provides, among other informations, 3D fields of temperature and salinity. The present data was downloaded from the Copernicus Marine Environment Monitoring Service (CMEMS). In the following, we will focus only on the temperature in July 2015.  
 
 We want to load multidimensional information from one NetCDF file, so we will use create a `brick` object, loading only the temperature (`varname="temp"`) and having depth as a third dimension (`lvar=4`).
@@ -314,7 +314,7 @@ abline(v=10, lty=3)
 
 ### C1. Load and vizualize the data
 
-####Load the monthly primary production of 2015 per depth layer
+#### Load the monthly primary production of 2015 per depth layer
 The GlobColour project provide a continuous data set of Ocean Colour products merged from different sensors (MERIS, MODIS AQUA, SeaWIFS and VIIRS) to ensure data continuity, improve spatial and temporal coverage and reduce data noise. The data is available at daily, weekly or monthly time step with a spatial resolution of 1km over Europe (around 0.01$^\circ$) and 1/24$^\circ$ globally. Dataset can be freely downloaded at : http://hermes.acri.fr/.
 
 The data provided here for this example is the monthly Chlorophyll concentration (mg/m3) computed using the GSM model (Maritorena and Siegel, 2005). The main assumption is that phytoplankton concentration dominates over inorganic particles. The chlorophyll concentration is commonly used as a proxy for the biomass of the phytoplankton
